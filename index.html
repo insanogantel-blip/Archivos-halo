@@ -14,7 +14,7 @@
             background: #000;
             color: #00ff9d;
             font-family: 'VT323', monospace;
-            font-size: 19px;
+            font-size: 18px;
         }
 
         #bg-canvas {
@@ -22,66 +22,56 @@
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: 1;
+            opacity: 0.85;
         }
 
         .container {
             position: relative;
             z-index: 2;
             height: 100vh;
-            padding: 20px;
+            padding: 15px;
             display: grid;
-            grid-template-columns: 320px 1fr 380px;
-            grid-template-rows: 80px 1fr 220px;
-            gap: 20px;
+            grid-template-columns: 280px 1fr 320px;
+            grid-template-rows: 70px 1fr 190px;
+            gap: 15px;
+            max-width: 1280px;
+            margin: 0 auto;
         }
 
         .panel {
-            background: rgba(0, 22, 15, 0.93);
+            background: rgba(0, 22, 15, 0.95);
             border: 3px solid #00ff9d;
-            box-shadow: 0 0 25px #00ff9d;
-            padding: 18px;
+            box-shadow: 0 0 20px #00ff9d;
+            padding: 15px;
             overflow-y: auto;
+            border-radius: 4px;
         }
 
         /* Barra superior */
         .top-bar {
             grid-column: 1 / -1;
-            height: 70px;
+            height: 65px;
             display: flex;
             align-items: center;
-            padding: 0 25px;
-            gap: 20px;
+            padding: 0 20px;
+            gap: 15px;
         }
 
-        /* Panel izquierdo */
-        .left-panel { grid-column: 1; grid-row: 2 / 4; }
-
-        /* Centro - Música */
-        .music-panel {
-            grid-column: 2;
-            grid-row: 2;
-            text-align: center;
-        }
-
-        /* Panel derecho */
+        /* Paneles */
+        .left-panel  { grid-column: 1; grid-row: 2 / 4; }
+        .music-panel { grid-column: 2; grid-row: 2; }
         .right-panel { grid-column: 3; grid-row: 2; }
-
-        /* Terminal inferior */
-        .terminal {
-            grid-column: 1 / -1;
-            grid-row: 3;
-            cursor: pointer;
-        }
+        .terminal     { grid-column: 1 / -1; grid-row: 3; cursor: pointer; }
 
         button {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             margin: 8px 0;
             background: #001a12;
             color: #00ff9d;
             border: 2px solid #00ff9d;
             font-family: 'VT323', monospace;
-            font-size: 20px;
+            font-size: 19px;
             cursor: pointer;
         }
 
@@ -90,24 +80,9 @@
             color: #000;
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.97);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            width: 95%;
-            max-width: 1100px;
-            height: 80vh;
-            background: rgba(0, 22, 15, 0.98);
-            border: 5px solid #00ff9d;
-            overflow: hidden;
+        h1, h2, h3 {
+            margin: 8px 0;
+            text-shadow: 0 0 10px #00ff9d;
         }
     </style>
 </head>
@@ -119,43 +94,43 @@
 
         <!-- Barra superior -->
         <div class="panel top-bar">
-            <span style="font-size:42px; color:#ffd700;">+</span>
-            <div style="flex:1; height:28px; background:linear-gradient(90deg, #ffd700, #ffaa00); border:2px solid #ffd700;"></div>
+            <span style="font-size:38px; color:#ffd700;">+</span>
+            <div style="flex:1; height:24px; background:linear-gradient(90deg, #ffd700, #ffaa00); border:2px solid #ffd700;"></div>
             <div style="display:flex; gap:6px;">
-                <div style="width:28px; height:38px; background:#00ff9d; box-shadow:0 0 15px #00ff9d;"></div>
-                <div style="width:28px; height:38px; background:#00ff9d; box-shadow:0 0 15px #00ff9d;"></div>
+                <div style="width:24px; height:34px; background:#00ff9d; box-shadow:0 0 12px #00ff9d;"></div>
+                <div style="width:24px; height:34px; background:#00ff9d; box-shadow:0 0 12px #00ff9d;"></div>
             </div>
         </div>
 
         <!-- Panel Izquierdo -->
         <div class="panel left-panel">
-            <h1>&gt; UNSC (UNITED NATIONS SPACE COMMAND)</h1>
-            <p>[ERROR] TERRIBLES GARBAGE HALO RING...</p>
-            <p>UNSC MASTER CHIEF - SPARTAN-117</p>
-            <p>UNSC CORTANA - AI CONSTRUCT</p>
-            <p>UNSC PILLAR OF AUTUMN - STATUS: CRITICAL</p>
-            <p>UNSC HALO INSTALLATION 04 - ACTIVE</p>
-            <p style="color:#ff4444;">[WARNING] FLOOD DETECTED</p>
+            <h1>&gt; UNSC COMMAND</h1>
+            <p>[ERROR] HALO RING DETECTED</p>
+            <p>MASTER CHIEF - SPARTAN-117</p>
+            <p>CORTANA - AI CONSTRUCT</p>
+            <p>PILLAR OF AUTUMN - STATUS: CRITICAL</p>
+            <p>HALO INSTALLATION 04 - ACTIVE</p>
+            <p style="color:#ff4444;">[WARNING] FLOOD CONTAMINATION</p>
         </div>
 
-        <!-- PANEL CENTRAL DE MÚSICA (más grande y visible) -->
+        <!-- Panel Central - Música -->
         <div class="panel music-panel">
-            <h2>🎵 SONIDO Y MÚSICA ORIGINAL</h2>
-            <button onclick="toggleMusic()">▶ REPRODUCIR MÚSICA HALO CE</button>
-            <button onclick="pauseMusic()">⏸ PAUSAR MÚSICA</button>
+            <h2>🎵 HALO CE ORIGINAL SOUNDTRACK</h2>
+            <button onclick="toggleMusic()">▶ REPRODUCIR MÚSICA</button>
+            <button onclick="pauseMusic()">⏸ PAUSAR</button>
             
-            <hr style="border-color:#00ff9d; margin:20px 0;">
+            <hr style="border-color:#00ff9d; margin:18px 0;">
             
-            <h3>🗣 VOZ DE CORTANA</h3>
-            <button onclick="playCortana(0)">Cortana: "Chief... I have a bad feeling about this"</button>
-            <button onclick="playCortana(1)">Cortana: "This ring... it's a weapon"</button>
-            <button onclick="playCortana(2)">Cortana: "The Covenant are already here?"</button>
+            <h3>🗣 CORTANA VOICE LOGS</h3>
+            <button onclick="playCortana(0)">"Chief... I have a bad feeling about this"</button>
+            <button onclick="playCortana(1)">"This ring... it's a weapon"</button>
+            <button onclick="playCortana(2)">"The Covenant are already here?"</button>
         </div>
 
         <!-- Panel Derecho -->
         <div class="panel right-panel">
-            <h2 style="text-align:center;">UNSC</h2>
-            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:15px;">
+            <h2 style="text-align:center;">THREAT ASSESSMENT</h2>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:10px;">
                 <div style="text-align:center;">
                     <h3>MASTER CHIEF</h3>
                     <p style="font-size:15px;">SPARTAN-117</p>
@@ -165,27 +140,26 @@
                     <p style="font-size:15px;">ELITE • GRUNT</p>
                 </div>
                 <div style="text-align:center;">
-                    <h3>GRUNT</h3>
-                    <p style="font-size:15px;">PEQUEÑO PERO PELIGROSO</p>
+                    <h3>FLOOD</h3>
+                    <p style="font-size:15px;">PARASITE</p>
                 </div>
             </div>
         </div>
 
-        <!-- Terminal -->
+        <!-- Terminal Inferior -->
         <div class="panel terminal" onclick="openModal()">
-            <h2>TERMINAL</h2>
-            <p>&gt; BIENVENIDO A HALO INSTALLATION 04</p>
-            <p>&gt; HAZ CLIC AQUÍ PARA VER TODA LA INFORMACIÓN</p>
-            <p style="color:#ffd700;">(Monstruos, trucos, mapas, historia...)</p>
+            <h2 style="text-align:center;">► UNSC TERMINAL ACCESS ◄</h2>
+            <p>&gt; BIENVENIDO A INSTALLATION 04</p>
+            <p>&gt; CLIC PARA ACCEDER A ARCHIVOS CLASIFICADOS</p>
+            <p style="color:#ffd700; text-align:center;">(Monstruos • Mapas • Trucos • Historia)</p>
         </div>
     </div>
 
-    <!-- Modal (información) -->
+    <!-- Modal -->
     <div id="modal" class="modal">
         <div class="modal-content">
-            <!-- Aquí puedes pegar el contenido del modal anterior -->
-            <h2 style="text-align:center; padding:20px; background:#001a12;">DATOS DE INTELIGENCIA - HALO CE</h2>
-            <!-- Agrega aquí las pestañas de monstruos, mapas, etc. si quieres -->
+            <h2 style="text-align:center; padding:20px; background:#001a12;">INTELIGENCIA UNSC - HALO CE</h2>
+            <!-- Aquí pondremos el contenido del modal después -->
         </div>
     </div>
 
@@ -202,7 +176,7 @@
 
         function toggleMusic() {
             if (music.paused) {
-                music.play().catch(() => alert("No se encontró el archivo halo_ce_theme.mp3\n\nPonlo en la misma carpeta que el index.html"));
+                music.play().catch(() => alert("No se encontró el archivo halo_ce_theme.mp3"));
             } else {
                 music.pause();
             }
@@ -218,16 +192,19 @@
         }
 
         function openModal() {
-            alert("Aquí iría toda la información completa (monstruos, trucos, mapas, etc.)\n\nDime qué secciones quieres que agregue y te las pongo.");
+            alert("Modal en construcción.\n\nDime qué quieres que ponga dentro (monstruos, mapas, etc.)");
         }
 
-        // Fondo animado (mismo de antes)
+        // Fondo canvas (mantengo el resize)
         const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize);
-        resize();
-        // ... (puedes copiar el código del fondo animado de la versión anterior)
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Aquí después pegaremos el código del anillo original cuando me lo des
     </script>
 </body>
 </html>
