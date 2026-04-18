@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNSC ARCHIVES - HALO CE v1.4</title>
+    <title>UNSC ARCHIVES v1.5 - HALO SAGA</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
@@ -13,110 +13,114 @@
             background: #000;
             color: #00ff9d;
             font-family: 'VT323', monospace;
-            font-size: 18px;
             overflow: hidden;
+            height: 100vh;
         }
 
-        #bg-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
-            opacity: 0.7;
+        #bg-canvas { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            z-index: 1; 
+            opacity: 0.65;
         }
 
         .container {
             position: relative;
             z-index: 2;
-            min-height: 100vh;
+            height: 100vh;
             padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
             text-align: center;
-            border-bottom: 3px solid #00ff9d;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            padding: 15px 0;
+            border-bottom: 3px solid #00cc7a;
         }
 
         .header h1 {
-            font-size: 42px;
+            font-size: 46px;
+            text-shadow: 0 0 20px #00ff9d;
             margin: 0;
-            text-shadow: 0 0 15px #00ff9d;
         }
 
-        .subtitle {
-            font-size: 22px;
-            color: #00cc7a;
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
 
-        .section {
-            background: rgba(0, 22, 15, 0.95);
+        .tab {
+            padding: 12px 25px;
+            background: rgba(0, 30, 20, 0.9);
             border: 2px solid #00ff9d;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+            color: #00ff9d;
+            cursor: pointer;
+            font-size: 20px;
         }
 
-        h2 {
-            color: #ffd700;
-            border-bottom: 2px solid #ffd700;
-            padding-bottom: 8px;
-            margin-top: 0;
+        .tab.active {
+            background: #00ff9d;
+            color: #000;
+            border-color: #ffd700;
+        }
+
+        .content {
+            flex: 1;
+            display: none;
+            background: rgba(5, 25, 18, 0.95);
+            border: 2px solid #00ff9d;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .content.active { display: block; }
+
+        .chief-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .chief-container img {
+            max-width: 320px;
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 30px #ffd700;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 15px 0;
+            margin: 20px 0;
         }
 
         th, td {
             border: 1px solid #00ff9d;
-            padding: 12px 15px;
+            padding: 12px;
             text-align: left;
         }
 
         th {
-            background: rgba(0, 255, 157, 0.1);
+            background: rgba(0, 255, 157, 0.15);
             color: #ffd700;
         }
 
-        .monster-name {
-            color: #ff4444;
-            font-weight: bold;
-        }
-
-        .trick {
-            background: rgba(255, 215, 0, 0.08);
-            padding: 12px;
-            margin: 10px 0;
-            border-left: 4px solid #ffd700;
-        }
-
-        .terminal-bottom {
-            text-align: center;
-            padding: 15px;
-            background: rgba(0, 22, 15, 0.95);
-            border: 2px solid #00ff9d;
-            margin-top: 30px;
-            cursor: pointer;
-        }
-
-        button {
+        .intro-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 15px 40px;
+            font-size: 22px;
             background: #001a12;
-            color: #00ff9d;
-            border: 2px solid #00ff9d;
-            padding: 12px 20px;
-            font-size: 18px;
-            margin: 8px;
+            color: #ffd700;
+            border: 3px solid #ffd700;
             cursor: pointer;
         }
 
-        button:hover {
-            background: #00ff9d;
+        .intro-btn:hover {
+            background: #ffd700;
             color: #000;
         }
     </style>
@@ -129,109 +133,103 @@
 
         <div class="header">
             <h1>UNITED NATIONS SPACE COMMAND</h1>
-            <p class="subtitle">ARCHIVOS CLASIFICADOS - INSTALLATION 04</p>
-            <p style="color:#ff4444; font-size:20px;">NIVEL DE SEGURIDAD: OMEGA</p>
+            <p style="font-size:24px; color:#ffd700;">ARCHIVOS CLASIFICADOS - HALO SAGA</p>
+            <p style="color:#ff4444;">NIVEL DE SEGURIDAD: OMEGA</p>
         </div>
 
-        <!-- Catálogo de Monstruos -->
-        <div class="section">
-            <h2>▶ CATÁLOGO DE ENTIDADES HOSTILES</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th>Descripción</th>
-                        <th>Nivel de Amenaza</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="monster-name">Master Chief</td>
-                        <td>SPARTAN-II</td>
-                        <td>Soldado supersoldado humano. Armadura Mjolnir.</td>
-                        <td style="color:#00ff9d;">Bajo (Aliado)</td>
-                    </tr>
-                    <tr>
-                        <td class="monster-name">Elite</td>
-                        <td>Covenant</td>
-                        <td>Guerrero Sangheili de alta jerarquía. Muy ágil y fuerte.</td>
-                        <td style="color:#ffaa00;">Alto</td>
-                    </tr>
-                    <tr>
-                        <td class="monster-name">Grunt</td>
-                        <td>Covenant</td>
-                        <td>Infantería básica. Cobarde pero peligroso en grupo.</td>
-                        <td style="color:#ffaa00;">Medio</td>
-                    </tr>
-                    <tr>
-                        <td class="monster-name">Jackal</td>
-                        <td>Covenant</td>
-                        <td>Tirador con escudo de energía.</td>
-                        <td style="color:#ffaa00;">Medio</td>
-                    </tr>
-                    <tr>
-                        <td class="monster-name">Hunter (Mgalekgolo)</td>
-                        <td>Covenant</td>
-                        <td>Enemigo pesado. Armadura casi impenetrable.</td>
-                        <td style="color:#ff4444;">Muy Alto</td>
-                    </tr>
-                    <tr>
-                        <td class="monster-name">Flood Infection Form</td>
-                        <td>Flood</td>
-                        <td>Forma parasitaria pequeña. Se adhiere al huésped.</td>
-                        <td style="color:#ff4444;">Alto</td>
-                    </tr>
-                    <tr>
-                        <td class="monster-name">Flood Combat Form</td>
-                        <td>Flood</td>
-                        <td>Huésped infectado. Muy agresivo y rápido.</td>
-                        <td style="color:#ff4444;">Muy Alto</td>
-                    </tr>
-                    <tr>
-                        <td class="monster-name">Flood Carrier Form</td>
-                        <td>Flood</td>
-                        <td>Explota liberando más formas de infección.</td>
-                        <td style="color:#ff4444;">Alto</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Pestañas de Sagas -->
+        <div class="tabs">
+            <div class="tab active" data-tab="ce">Halo CE</div>
+            <div class="tab" data-tab="h2">Halo 2</div>
+            <div class="tab" data-tab="h3">Halo 3</div>
+            <div class="tab" data-tab="h4">Halo 4</div>
+            <div class="tab" data-tab="h5">Halo 5</div>
         </div>
 
-        <!-- Trucos y Secretos -->
-        <div class="section">
-            <h2>▶ TRUCOS, SECRETOS Y ATAJOS - HALO CE</h2>
+        <!-- Contenido Halo CE -->
+        <div id="ce" class="content active">
+            <h2 style="color:#ffd700;">Halo: Combat Evolved</h2>
+            <div class="chief-container">
+                <img src="https://via.placeholder.com/600x400/111/00ff9d?text=MASTER+CHIEF" alt="Master Chief">
+                <p><strong>SPARTAN-117 - John-117</strong></p>
+            </div>
+            <button class="intro-btn" onclick="playIntro('reach')">VER INTRO OFICIAL - HALO REACH (Planeta en caos)</button>
             
-            <div class="trick">
-                <strong>Truco Clásico:</strong> Mantén presionado el botón de recargar mientras saltas para hacer "Super Jump" en algunos mapas.
-            </div>
-            <div class="trick">
-                <strong>Skull "Iron":</strong> Actívalo para que no puedas recargar munición. Muy difícil.
-            </div>
-            <div class="trick">
-                <strong>Secretos en The Silent Cartographer:</strong> Hay un camino oculto que te lleva a un Banshee muy temprano.
-            </div>
-            <div class="trick">
-                <strong>Truco de velocidad:</strong> En el nivel "The Pillar of Autumn", puedes salir del mapa por el techo en la primera sala.
-            </div>
-            <div class="trick">
-                <strong>Co-op Skip:</strong> En muchos niveles se pueden saltar secciones enteras con glitches.
-            </div>
+            <h3>Catálogo de Entidades Hostiles</h3>
+            <!-- Aquí puedes pegar la tabla de la versión anterior -->
+            <p>El catálogo de monstruos queda en esta sección (puedes copiar la tabla de antes).</p>
         </div>
 
-        <!-- Botón para volver o más info -->
-        <div class="terminal-bottom" onclick="alert('Volviendo a terminal principal... (en construcción)')">
-            <h2>◄ REGRESAR A TERMINAL PRINCIPAL ►</h2>
-            <p>Haz clic aquí para volver al menú principal</p>
+        <!-- Contenido Halo 2 -->
+        <div id="h2" class="content">
+            <h2 style="color:#ffd700;">Halo 2</h2>
+            <p>El Árbitro, la Gran Jornada, Delta Halo...</p>
+            <p>Próximamente más detalles y trucos.</p>
         </div>
 
+        <!-- Contenido Halo 3 -->
+        <div id="h3" class="content">
+            <h2 style="color:#ffd700;">Halo 3</h2>
+            <p>El final de la guerra humano-covenant. Cortana, Flood y el Jefe.</p>
+        </div>
+
+        <!-- Contenido Halo 4 -->
+        <div id="h4" class="content">
+            <h2 style="color:#ffd700;">Halo 4</h2>
+            <p>Requeriem, los Prometeanos y el despertar del Jefe.</p>
+        </div>
+
+        <!-- Contenido Halo 5 -->
+        <div id="h5" class="content">
+            <h2 style="color:#ffd700;">Halo 5: Guardians</h2>
+            <p>Blue Team vs Osiris. La amenaza de Cortana.</p>
+        </div>
+
+        <!-- Música y controles -->
+        <div style="text-align:center; padding:15px;">
+            <button onclick="playMusic()">▶ MÚSICA HALO CE (Tema Principal)</button>
+            <button onclick="pauseMusic()">⏸ PAUSAR</button>
+        </div>
     </div>
 
+    <!-- Audio -->
+    <audio id="halo-music" loop>
+        <source src="halo_main_theme.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        // Canvas de fondo (puedes pegar aquí el código del anillo que te gustaba)
+        // Tabs
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Música
+        const music = document.getElementById('halo-music');
+        function playMusic() {
+            music.play().catch(() => alert("Descarga el archivo 'halo_main_theme.mp3' y ponlo en la misma carpeta."));
+        }
+        function pauseMusic() {
+            music.pause();
+        }
+
+        // Intro de Halo Reach (la más épica del planeta en caos)
+        function playIntro(game) {
+            if (game === 'reach') {
+                window.open('https://www.youtube.com/watch?v=g_LtNgJ-7js', '_blank');
+                // O usa iframe fullscreen si prefieres dentro de la página
+            }
+        }
+
+        // Fondo canvas simple (puedes mejorarlo con estrellas o anillo)
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
-
+        
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -239,8 +237,30 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // Aquí después pondremos el dibujo del anillo original
-        // Por ahora queda listo para agregar el fondo animado
+        // Animación básica de fondo (estrellas)
+        let stars = [];
+        for(let i = 0; i < 200; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2 + 0.5,
+                speed: Math.random() * 0.3 + 0.1
+            });
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff9d';
+            stars.forEach(s => {
+                ctx.fillRect(s.x, s.y, s.size, s.size);
+                s.y += s.speed;
+                if (s.y > canvas.height) s.y = 0;
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
     </script>
 </body>
 </html>
