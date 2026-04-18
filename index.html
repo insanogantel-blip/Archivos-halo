@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>UNSC INTERFACE - INSTALLATION 04</title>
+    <title>UNSC MISSION TERMINAL - HALO 04</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
@@ -12,184 +12,205 @@
             width: 100%;
             height: 100%;
             background-color: #000;
-            /* AQUÍ SE USA TU FOTO COMO FONDO */
-            background-image: url('protitipo.jpg'); 
-            background-size: cover;
-            background-position: center;
             font-family: 'Share Tech Mono', monospace;
             overflow: hidden;
             color: #48fbaf;
         }
 
-        /* Capa de escaneo para que parezca un monitor */
-        .scanlines {
+        /* Video de fondo de los anillos de Halo */
+        #bg-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -2;
+            filter: brightness(0.4) contrast(1.2);
+        }
+
+        /* Capa de efecto digital/monitor */
+        .overlay-fx {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            background-size: 100% 3px, 2px 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
+                        linear-gradient(90deg, rgba(72, 251, 175, 0.05), rgba(0, 0, 0, 0), rgba(72, 251, 175, 0.05));
+            background-size: 100% 4px, 100% 100%;
+            z-index: -1;
             pointer-events: none;
         }
 
-        /* Contenedor Principal Transparente para no tapar el fondo */
-        .overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 10, 15, 0.4); /* Oscurece un poco para leer mejor */
+        .container {
+            position: relative;
+            z-index: 1;
+            padding: 40px;
+            height: 100vh;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            padding: 40px;
-            box-sizing: border-box;
+            justify-content: space-between;
         }
 
-        .hud-header {
+        /* HUD - Barra de Escudo */
+        header {
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px solid rgba(72, 251, 175, 0.5);
-            padding-bottom: 10px;
+            align-items: flex-start;
         }
 
-        .shield-box {
+        .shield-ui {
             text-align: right;
         }
 
         .shield-bar {
-            width: 200px;
-            height: 12px;
-            border: 1px solid #ffcc00;
+            width: 300px;
+            height: 15px;
+            border: 2px solid #ffcc00;
             background: rgba(255, 204, 0, 0.1);
+            position: relative;
         }
 
         .shield-fill {
-            width: 90%; height: 100%;
+            width: 85%;
+            height: 100%;
             background: #ffcc00;
             box-shadow: 0 0 15px #ffcc00;
+            animation: flicker 2s infinite;
         }
 
-        /* Estilo de los cuadros de texto (igual a tu foto) */
-        .terminal-window {
+        /* Cuadros de Información */
+        .terminal-box {
             border: 1px solid rgba(72, 251, 175, 0.6);
-            background: rgba(0, 25, 25, 0.3);
-            backdrop-filter: blur(3px);
-            padding: 15px;
-            margin-top: 20px;
-            width: 350px;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-
-        .master-chief-info {
-            position: absolute;
-            bottom: 50px;
-            right: 400px;
-        }
-
-        .enemy-info {
-            position: absolute;
-            bottom: 50px;
-            right: 50px;
-            display: flex;
-            gap: 20px;
-        }
-
-        .enemy-card {
-            border: 1px solid #48fbaf;
             background: rgba(0, 20, 20, 0.6);
-            width: 150px;
-            padding: 10px;
-            text-align: center;
+            backdrop-filter: blur(5px);
+            padding: 20px;
+            width: 380px;
+            box-shadow: 0 0 20px rgba(0, 255, 150, 0.1);
         }
 
-        .enemy-card img {
-            width: 100%;
-            filter: sepia(1) saturate(5) hue-rotate(90deg); /* Efecto holograma verde */
+        .stats-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
 
-        /* Botón de Inicio para el Sonido */
-        #start-btn {
+        h2 { border-bottom: 1px solid #48fbaf; margin: 0 0 10px 0; font-size: 18px; color: #a1ffda; }
+
+        /* Botón de Inicio */
+        #start-screen {
             position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px 40px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        #start-btn {
+            padding: 20px 50px;
+            font-family: 'Share Tech Mono', monospace;
+            background: transparent;
+            color: #48fbaf;
+            border: 2px solid #48fbaf;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #start-btn:hover {
             background: #48fbaf;
             color: #000;
-            border: none;
-            font-family: 'Share Tech Mono', monospace;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 0 20px #48fbaf;
+            box-shadow: 0 0 30px #48fbaf;
         }
 
-        .hidden { display: none; }
-        
-        h2 { margin: 0 0 10px 0; font-size: 16px; border-bottom: 1px solid #48fbaf; }
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        .enemy-tag {
+            display: inline-block;
+            margin-right: 10px;
+            border: 1px solid #48fbaf;
+            padding: 5px;
+            text-align: center;
+            width: 100px;
+        }
     </style>
 </head>
 <body>
 
-<div class="scanlines"></div>
+<div id="start-screen">
+    <button id="start-btn" onclick="initSystem()">[ INICIAR PROTOCOLO COLE ]</button>
+</div>
 
-<button id="start-btn" onclick="startSystem()">INICIAR PROTOCOLO DE TERMINAL</button>
+<video autoplay muted loop id="bg-video">
+    <source src="https://assets.mixkit.co/videos/preview/mixkit-stars-in-the-deep-blue-sky-31842-large.mp4" type="video/mp4">
+</video>
 
-<div class="overlay">
-    <div class="hud-header">
+<div class="overlay-fx"></div>
+
+<div class="container">
+    <header>
         <div>
-            <h1 style="margin:0; font-size: 24px;">UNSC_CORE // HALO_04</h1>
-            <span id="typing-text"></span>
+            <h1 style="margin:0; letter-spacing: 5px;">UNSC // INSTALLATION_04</h1>
+            <p id="cortana-text" style="color: #ffcc00; margin: 5px 0;"></p>
         </div>
-        <div class="shield-box">
-            <div style="font-size: 10px; color: #ffcc00;">SISTEMA DE ESCUDOS MJOLNIR</div>
+        <div class="shield-ui">
+            <div style="font-size: 12px; margin-bottom: 5px;">SISTEMA DE ESCUDOS MJOLNIR</div>
             <div class="shield-bar"><div class="shield-fill"></div></div>
         </div>
-    </div>
+    </header>
 
-    <div class="terminal-window">
-        <h2 style="color: #ffcc00;">> CORTANA_LOG_2552</h2>
-        <p id="cortana-msg"></p>
-    </div>
-
-    <div class="terminal-window master-chief-info">
-        <h2>MASTER CHIEF - S117</h2>
-        <p>EDAD: 41 (BIOLÓGICA)<br>
-           ESTATURA: 2.18 METROS<br>
-           PESO: 451 KG (FULL GEAR)<br>
-           RANGO: SUB-OFICIAL JEFE MAESTRO</p>
-    </div>
-
-    <div class="enemy-info">
-        <div class="enemy-card">
-            <h2>COVENANT</h2>
-            <div style="font-size: 10px;">AMENAZA: ALTA</div>
-            <p>ELITE / SANGHEILI</p>
+    <div class="stats-grid">
+        <div class="terminal-box">
+            <h2>PERFIL: MASTER CHIEF S-117</h2>
+            <p>ESTATURA: 218 CM<br>
+               PESO: 451 KG<br>
+               ESTADO: ACTIVO EN EL ANILLO<br>
+               IA ASIGNADA: CORTANA [CTN 0452-9]</p>
         </div>
-        <div class="enemy-card">
-            <h2>GRUNT</h2>
-            <div style="font-size: 10px;">AMENAZA: MEDIA</div>
-            <p>UNGGOY / APOYO</p>
+
+        <div class="terminal-box" style="width: 500px;">
+            <h2>INTELIGENCIA DE AMENAZAS</h2>
+            <div style="display: flex;">
+                <div class="enemy-tag">
+                    <div style="font-size: 10px;">COVENANT</div>
+                    <small>ELITE</small>
+                </div>
+                <div class="enemy-tag">
+                    <div style="font-size: 10px;">COVENANT</div>
+                    <small>GRUNT</small>
+                </div>
+                <div class="enemy-tag" style="border-color: red; color: red;">
+                    <div style="font-size: 10px;">PARÁSITO</div>
+                    <small>FLOOD</small>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div id="youtube-audio" class="hidden"></div>
+<audio id="halo-theme" loop>
+    <source src="https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Halo+Theme&filename=mt/MTI1MzM2ODExMjUzNDY2_7lzh_2bR_2f_2bIA.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-    function startSystem() {
-        // Ocultar botón
-        document.getElementById('start-btn').style.display = 'none';
+    function initSystem() {
+        document.getElementById('start-screen').style.display = 'none';
+        
+        // Iniciar Música
+        const music = document.getElementById('halo-theme');
+        music.volume = 0.4;
+        music.play();
 
-        // Cargar música de Halo (ID de YouTube del tema original)
-        const audio = new Audio('https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Halo+Theme&filename=mt/MTI1MzM2ODExMjUzNDY2_7lzh_2bR_2f_2bIA.mp3');
-        audio.loop = true;
-        audio.volume = 0.5;
-        audio.play();
-
-        // Efecto de escritura para Cortana
+        // Voz de Cortana (Efecto de escritura)
         let i = 0;
-        let txt = 'Cortana: "Estamos en un anillo... es Halo. Jefe, prepárese para el contacto Covenant."';
+        let txt = 'CORTANA: "Estamos en un anillo... es Halo. Prepárate, Jefe. El Covenant ya está aquí."';
         function typeWriter() {
             if (i < txt.length) {
-                document.getElementById("cortana-msg").innerHTML += txt.charAt(i);
+                document.getElementById("cortana-text").innerHTML += txt.charAt(i);
                 i++;
                 setTimeout(typeWriter, 50);
             }
