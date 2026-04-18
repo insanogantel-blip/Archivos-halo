@@ -2,149 +2,191 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>SISTEMA MJOLNIR V.1.0.4</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNSC Terminal - Halo Installation 04</title>
     <style>
-        /* ESTÉTICA EXACTA DE LA CAPTURA */
+        /* Importamos una fuente estilo digital */
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
         body {
-            background-color: #000000;
-            color: #00ffff;
-            font-family: 'Courier New', Courier, monospace;
+            background-color: #01080b;
+            color: #48fbaf;
+            font-family: 'Share Tech Mono', monospace;
             margin: 0;
             padding: 20px;
-            overflow-x: hidden;
+            /* Efecto de líneas de escaneo de monitor antiguo */
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            background-attachment: fixed;
         }
 
-        /* LÍNEA DE CONEXIÓN NEURAL */
-        .neural-line {
-            width: 100%;
-            height: 2px;
-            background-color: #00ffff;
-            box-shadow: 0 0 15px #00ffff;
-            margin: 40px 0;
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            border: 2px solid #48fbaf;
+            padding: 20px;
+            background: rgba(2, 13, 18, 0.9);
+            box-shadow: 0 0 30px rgba(72, 251, 175, 0.1);
         }
 
-        /* TÍTULO ARIEL CON BRILLO EXTERIOR */
-        .main-header {
-            text-align: center;
-            margin-top: 100px;
-        }
-
-        .version-tag {
-            font-size: 14px;
-            vertical-align: middle;
-            margin-right: 20px;
-        }
-
-        .hero-name {
-            font-size: 100px;
-            font-weight: bold;
-            letter-spacing: 15px;
-            text-shadow: 0 0 25px #00ffff;
-            display: inline-block;
-        }
-
-        .status-tag {
-            text-align: center;
-            color: #00ff00;
-            font-size: 14px;
-            letter-spacing: 3px;
-            margin-top: 10px;
-        }
-
-        /* BLOQUES DE DATOS CON BORDES CIAN */
-        .data-container {
-            max-width: 900px;
-            margin: 50px auto;
-        }
-
-        .data-box {
-            border: 2px solid #00ffff;
-            padding: 30px;
-            margin-bottom: 25px;
-            background: rgba(0, 0, 0, 0.8);
-        }
-
-        .data-title {
-            font-weight: bold;
-            font-size: 18px;
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        .data-content {
-            font-size: 18px;
-            line-height: 1.6;
-            display: inline;
-        }
-
-        /* BOTÓN DE ACTIVACIÓN (PARA EL AUDIO) */
-        #overlay {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 1000;
+        /* HEADER - Estilo HUD */
+        header {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            border-bottom: 2px solid #48fbaf;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
         }
 
-        .btn-init {
-            background: none;
-            border: 1px solid #00ffff;
-            color: #00ffff;
-            padding: 20px 40px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 20px;
+        .shield-container {
+            text-align: right;
         }
+
+        .shield-bar {
+            width: 250px;
+            height: 15px;
+            background: rgba(255, 204, 0, 0.2);
+            border: 1px solid #ffcc00;
+        }
+
+        .shield-fill {
+            width: 85%;
+            height: 100%;
+            background: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        /* INTRO CORTANA */
+        .cortana-intro {
+            border-left: 4px solid #48fbaf;
+            background: rgba(72, 251, 175, 0.05);
+            padding: 15px;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .accent { color: #ffcc00; font-weight: bold; }
+
+        /* GRID DE INFORMACIÓN */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            border: 1px solid rgba(72, 251, 175, 0.4);
+            padding: 15px;
+            background: rgba(0, 30, 30, 0.2);
+        }
+
+        h2 {
+            border-bottom: 1px solid #48fbaf;
+            padding-bottom: 5px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        /* TABLAS DE DATOS */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        td { padding: 8px 5px; border-bottom: 1px solid rgba(72, 251, 175, 0.1); }
+        .label { color: #a1ffda; opacity: 0.8; width: 40%; }
+
+        /* IMÁGENES SIMULADAS */
+        .img-box {
+            width: 100%;
+            height: 180px;
+            background: #051a1a;
+            border: 1px solid #48fbaf;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            color: rgba(72, 251, 175, 0.3);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.7rem;
+            opacity: 0.5;
+            letter-spacing: 5px;
+        }
+
+        /* Audio Player Simple */
+        .audio-sim {
+            background: #0a2020;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #48fbaf;
+            font-size: 0.9rem;
+        }
+
     </style>
 </head>
 <body>
 
-<div id="overlay">
-    <button class="btn-init" onclick="iniciarSistema()">[ INICIAR CONEXIÓN NEURAL ]</button>
-</div>
+<div class="container">
+    <header>
+        <div>
+            <h1 style="margin: 0; font-size: 1.5rem;">UNSC_TERMINAL_V.04</h1>
+            <span style="font-size: 0.8rem;">SISTEMA OPERATIVO: MJOLNIR V.IV</span>
+        </div>
+        <div class="shield-container">
+            <div style="font-size: 0.7rem; margin-bottom: 3px;">ENERGÍA DEL ESCUDO</div>
+            <div class="shield-bar"><div class="shield-fill"></div></div>
+        </div>
+    </header>
 
-<div id="interface" style="display:none;">
-    <div class="main-header">
-        <span class="version-tag">SISTEMA MJOLNIR V.1.0.4</span>
-        <div class="hero-name">ARIEL</div>
-        <div class="status-tag">[ CONEXIÓN NEURAL ESTABLECIDA ]</div>
+    <div class="audio-sim">
+        🔊 REPRODUCIENDO: HALO_LOBBY_THEME.MP3 | 03:42
     </div>
 
-    <div class="neural-line"></div>
+    <div class="cortana-intro">
+        <p><span class="accent">[CORTANA]:</span> "Estamos saltando al azar... Espera. Los datos de coordenadas del Capitán Keyes no eran para un salto a ciegas. Estamos en algún lugar... ¿Qué es eso?"</p>
+        <p><span class="accent">[CHIEF]:</span> "¿Es una base enemiga?"</p>
+        <p><span class="accent">[CORTANA]:</span> "No... es un anillo. Es Halo."</p>
+    </div>
 
-    <div class="data-container">
-        <div class="data-box">
-            <span class="data-title">DATA_01:</span>
-            <span class="data-content">Sistema de gestión de residuos inteligente basado en nodos de datos de Industria 4.0. Interfaz "Zero Touch" mediante sensores térmicos.</span>
+    <div class="grid">
+        <div class="card">
+            <h2>EXPEDIENTE: SPARTAN-117</h2>
+            <div class="img-box">SCANNING_SUBJECT_117.PNG</div>
+            <table>
+                <tr><td class="label">SUJETO:</td><td>John-117</td></tr>
+                <tr><td class="label">RANGO:</td><td>Master Chief</td></tr>
+                <tr><td class="label">EDAD:</td><td>~41 años (Cronológicos)</td></tr>
+                <tr><td class="label">ESTATURA:</td><td>2.18 m (Con Armadura)</td></tr>
+                <tr><td class="label">PESO:</td><td>451 kg (Con Armadura)</td></tr>
+                <tr><td class="label">ESTADO:</td><td class="accent">EN COMBATE</td></tr>
+            </table>
         </div>
 
-        <div class="data-box">
-            <span class="data-title">DATA_02:</span>
-            <span class="data-content">Sensores Infrarrojos Pasivos (PIR) detectan calor humano para apertura automática. Termo-resistores vigilan la temperatura interna.</span>
-        </div>
+        <div class="card">
+            <h2>INTELIGENCIA DE AMENAZAS</h2>
+            
+            <h3 style="margin-bottom: 5px;">COVENANT: ELITE</h3>
+            <div class="img-box">SANGHEILI_WARRIOR.DATA</div>
+            <p style="font-size: 0.8rem;">Guerreros tácticos con escudos de energía. Muy peligrosos en distancias cortas.</p>
 
-        <div class="data-box">
-            <span class="data-title">DATA_03:</span>
-            <span class="data-content">Monitoreo de llenado mediante ultrasonido al 90%, evitando plagas.</span>
+            <h3 style="margin-bottom: 5px;">COVENANT: GRUNT</h3>
+            <div class="img-box">UNGGOY_LOG.DATA</div>
+            <p style="font-size: 0.8rem;">Carne de cañón. Dependientes de metano. Pánico extremo sin líderes.</p>
+
+            <h3 style="margin-bottom: 5px; color: #ffcc00;">THE FLOOD</h3>
+            <div class="img-box" style="border-color: #ffcc00;">BIOHAZARD_DETECTED.DATA</div>
+            <p style="font-size: 0.8rem;">Parásito infeccioso. Protocolo de contención: Fuego total.</p>
         </div>
     </div>
-</div>
 
-<script>
-    function iniciarSistema() {
-        document.getElementById('overlay').style.display = 'none';
-        document.getElementById('interface').style.display = 'block';
-        
-        // Voz de Cortana
-        const synth = window.speechSynthesis;
-        const u = new SpeechSynthesisUtterance("Conexión establecida. Bienvenido, Jefe.");
-        u.lang = 'es-MX';
-        u.pitch = 1.3;
-        synth.speak(u);
-    }
-</script>
+    <div class="footer">
+        PROPERTY OF UNITED NATIONS SPACE COMMAND - CLASSIFIED
+    </div>
+</div>
 
 </body>
 </html>
