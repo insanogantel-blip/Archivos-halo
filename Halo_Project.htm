@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNSC - PROTOCOLO MJOLNIR</title>
+    <style>
+        :root { --halo-cyan: #00ffff; --halo-gold: #ffd700; --glass: rgba(0, 20, 30, 0.7); }
+
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background: #000; font-family: 'Courier New', monospace; 
+            color: var(--halo-cyan); overflow: hidden;
+        }
+
+        /* VIDEO DE FONDO - EL ANILLO ORIGINAL */
+        .video-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+        .video-bg iframe {
+            width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            opacity: 0.5; filter: contrast(1.2) brightness(0.8);
+        }
+
+        /* PANTALLA DE INICIO (BYPASS DE AUDIO) */
+        #start-overlay {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: 1.5s;
+        }
+        .start-btn {
+            background: transparent; border: 2px solid var(--halo-cyan);
+            color: var(--halo-cyan); padding: 25px 50px; font-size: 20px;
+            cursor: pointer; box-shadow: 0 0 20px var(--halo-cyan);
+            font-family: 'Courier New', monospace; font-weight: bold;
+        }
+        .start-btn:hover { background: var(--halo-cyan); color: #000; }
+
+        /* INTERFAZ HUD */
+        #hud-main { display: none; height: 100vh; overflow-y: auto; padding: 40px; box-sizing: border-box; }
+        
+        .hud-header { position: fixed; top: 30px; left: 30px; z-index: 100; }
+        .shield-bar { width: 350px; height: 18px; border: 2px solid var(--halo-cyan); background: rgba(0,255,255,0.1); }
+        .shield-fill { width: 100%; height: 100%; background: var(--halo-cyan); box-shadow: 0 0 15px var(--halo-cyan); animation: pulse 2s infinite; }
+        .health-dots { margin-top: 8px; }
+        .dot { width: 28px; height: 14px; background: #00ff00; display: inline-block; margin-right: 6px; border: 1px solid #004400; }
+
+        /* CONTENIDO GLASSMORPHISM (COMO EN LA IMAGEN) */
+        .terminal-container {
+            max-width: 1100px; margin: 100px auto 50px;
+            background: var(--glass); backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            padding: 40px; border-radius: 5px;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+        }
+
+        .main-title { 
+            text-align: center; font-size: 2.5rem; letter-spacing: 5px;
+            border-bottom: 2px solid var(--halo-cyan); padding-bottom: 15px; margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        
+        .info-card { 
+            border: 1px solid rgba(0,255,255,0.3); padding: 20px; 
+            background: rgba(0,0,0,0.4); position: relative;
+        }
+        .info-card::before { content: "DATA_NODE"; position: absolute; top: -10px; left: 10px; background: #000; font-size: 10px; padding: 0 5px; }
+
+        .tag { color: var(--halo-gold); font-weight: bold; display: block; margin-bottom: 10px; font-size: 1.2rem; }
+        .img-frame { width: 100%; height: 200px; object-fit: cover; border: 1px solid var(--halo-cyan); margin: 10px 0; }
+
+        .rgb-name { 
+            font-size: 3rem; font-weight: 900; text-align: center; margin-top: 50px;
+            animation: rgb-cycle 1s infinite linear; 
+        }
+
+        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
+        @keyframes rgb-cycle { 0% {color: red;} 33% {color: #0f0;} 66% {color: #00f;} 100% {color: red;} }
+
+        /* AUDIO ICON */
+        .audio-status { position: fixed; bottom: 20px; right: 20px; font-size: 12px; color: #00ff00; }
+    </style>
+</head>
+<body>
+
+    <div class="video-bg">
+        <iframe id="halo-yt" src="https://www.youtube.com/embed/Swa-T_Yv8E0?enablejsapi=1&autoplay=0&mute=1&controls=0&loop=1&playlist=Swa-T_Yv8E0" frameborder="0"></iframe>
+    </div>
+
+    <div id="start-overlay">
+        <button class="start-btn" onclick="iniciarTodo()">[ ACCEDER AL ARCHIVO 117 ]</button>
+        <p style="margin-top: 20px; opacity: 0.6;">SISTEMA OPERATIVO UNSC v4.0.2</p>
+    </div>
+
+    <div id="hud-main">
+        <div class="hud-header">
+            <div class="shield-bar"><div class="shield-fill"></div></div>
+            <div class="health-dots">
+                <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+        </div>
+
+        <div class="terminal-container">
+            <h1 class="main-title decrypt" data-text="REGISTROS DE INTELIGENCIA: HALO CE">REGISTROS DE INTELIGENCIA: HALO CE</h1>
+
+            <div class="grid-layout">
+                <div class="info-card">
+                    <span class="tag">SUJETO: SPARTAN-117</span>
+                    <p><strong>NOMBRE:</strong> John</p>
+                    <p><strong>ESTATURA:</strong> 2.18m (Armadura Mark V)</p>
+                    <p><strong>PESO:</strong> 451.3 kg</p>
+                    <p><strong>RANGO:</strong> Master Chief Petty Officer</p>
+                    <p>El último bastión de la humanidad. Modificado genéticamente para ser el guerrero perfecto.</p>
+                </div>
+
+                <div class="info-card">
+                    <span class="tag">AMENAZA: EL COVENANT</span>
+                    <img src="https://i.ibb.co/3s6xW1V/covenant-group.png" class="img-frame">
+                    <p>Una hegemonía religiosa compuesta por diversas especies. Consideran a los humanos una afrenta a sus dioses Forerunner.</p>
+                </div>
+
+                <div class="info-card">
+                    <span class="tag">ESPECIE: GRUNT (UNGGOY)</span>
+                    <img src="https://i.ibb.co/1q94K1k/grunt-halo.png" class="img-frame">
+                    <p>Pequeños, respiran metano y son la fuerza de infantería básica. Cuidado: en grupos son peligrosos por sus granadas de plasma.</p>
+                </div>
+            </div>
+
+            <div class="rgb-name">ADMINISTRADOR JORGE</div>
+        </div>
+    </div>
+
+    <div class="audio-status" id="audio-txt"></div>
+
+    <script>
+        function scramble(el) {
+            const text = el.getAttribute('data-text') || el.innerText;
+            const chars = '!<>-_\\/[]{}—=+*^?#________';
+            let i = 0;
+            const inv = setInterval(() => {
+                el.innerText = text.split('').map((l, idx) => idx < i ? text[idx] : chars[Math.floor(Math.random()*chars.length)]).join('');
+                if(i >= text.length) clearInterval(inv);
+                i += 1/3;
+            }, 30);
+        }
+
+        function iniciarTodo() {
+            // Activar Video y Audio de YouTube
+            const video = document.getElementById('halo-yt');
+            video.src += "&autoplay=1&mute=0";
+            
+            // Cortana Habla
+            const synth = window.speechSynthesis;
+            const u = new SpeechSynthesisUtterance("Bienvenido Jefe. Todos los archivos tácticos han sido recuperados.");
+            u.lang = 'es-MX';
+            u.pitch = 1.2;
+            u.rate = 0.95;
+            synth.speak(u);
+
+            // Transición
+            document.getElementById('start-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('start-overlay').style.display = 'none';
+                document.getElementById('hud-main').style.display = 'block';
+                document.getElementById('audio-txt').innerText = "AUDIO: MJOLNIR_MIX_v1";
+                
+                // Efecto de letras
+                scramble(document.querySelector('.decrypt'));
+                document.querySelectorAll('.info-card p').forEach(p => {
+                    p.setAttribute('data-text', p.innerText);
+                    scramble(p);
+                });
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
