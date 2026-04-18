@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halo CE - UNSC TERMINAL</title>
+    <title>UNSC ARCHIVES - HALO CE v1.4</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
         body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
             background: #000;
             color: #00ff9d;
             font-family: 'VT323', monospace;
             font-size: 18px;
+            overflow: hidden;
         }
 
         #bg-canvas {
@@ -22,67 +22,102 @@
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: 1;
-            opacity: 0.85;
+            opacity: 0.7;
         }
 
         .container {
             position: relative;
             z-index: 2;
-            height: 100vh;
-            padding: 15px;
-            display: grid;
-            grid-template-columns: 280px 1fr 320px;
-            grid-template-rows: 70px 1fr 190px;
-            gap: 15px;
-            max-width: 1280px;
+            min-height: 100vh;
+            padding: 20px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .panel {
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #00ff9d;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            margin: 0;
+            text-shadow: 0 0 15px #00ff9d;
+        }
+
+        .subtitle {
+            font-size: 22px;
+            color: #00cc7a;
+        }
+
+        .section {
             background: rgba(0, 22, 15, 0.95);
-            border: 3px solid #00ff9d;
-            box-shadow: 0 0 20px #00ff9d;
+            border: 2px solid #00ff9d;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+        }
+
+        h2 {
+            color: #ffd700;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 1px solid #00ff9d;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(0, 255, 157, 0.1);
+            color: #ffd700;
+        }
+
+        .monster-name {
+            color: #ff4444;
+            font-weight: bold;
+        }
+
+        .trick {
+            background: rgba(255, 215, 0, 0.08);
+            padding: 12px;
+            margin: 10px 0;
+            border-left: 4px solid #ffd700;
+        }
+
+        .terminal-bottom {
+            text-align: center;
             padding: 15px;
-            overflow-y: auto;
-            border-radius: 4px;
+            background: rgba(0, 22, 15, 0.95);
+            border: 2px solid #00ff9d;
+            margin-top: 30px;
+            cursor: pointer;
         }
-
-        /* Barra superior */
-        .top-bar {
-            grid-column: 1 / -1;
-            height: 65px;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            gap: 15px;
-        }
-
-        /* Paneles */
-        .left-panel  { grid-column: 1; grid-row: 2 / 4; }
-        .music-panel { grid-column: 2; grid-row: 2; }
-        .right-panel { grid-column: 3; grid-row: 2; }
-        .terminal     { grid-column: 1 / -1; grid-row: 3; cursor: pointer; }
 
         button {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
             background: #001a12;
             color: #00ff9d;
             border: 2px solid #00ff9d;
-            font-family: 'VT323', monospace;
-            font-size: 19px;
+            padding: 12px 20px;
+            font-size: 18px;
+            margin: 8px;
             cursor: pointer;
         }
 
         button:hover {
             background: #00ff9d;
             color: #000;
-        }
-
-        h1, h2, h3 {
-            margin: 8px 0;
-            text-shadow: 0 0 10px #00ff9d;
         }
     </style>
 </head>
@@ -92,119 +127,120 @@
 
     <div class="container">
 
-        <!-- Barra superior -->
-        <div class="panel top-bar">
-            <span style="font-size:38px; color:#ffd700;">+</span>
-            <div style="flex:1; height:24px; background:linear-gradient(90deg, #ffd700, #ffaa00); border:2px solid #ffd700;"></div>
-            <div style="display:flex; gap:6px;">
-                <div style="width:24px; height:34px; background:#00ff9d; box-shadow:0 0 12px #00ff9d;"></div>
-                <div style="width:24px; height:34px; background:#00ff9d; box-shadow:0 0 12px #00ff9d;"></div>
+        <div class="header">
+            <h1>UNITED NATIONS SPACE COMMAND</h1>
+            <p class="subtitle">ARCHIVOS CLASIFICADOS - INSTALLATION 04</p>
+            <p style="color:#ff4444; font-size:20px;">NIVEL DE SEGURIDAD: OMEGA</p>
+        </div>
+
+        <!-- Catálogo de Monstruos -->
+        <div class="section">
+            <h2>▶ CATÁLOGO DE ENTIDADES HOSTILES</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Nivel de Amenaza</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="monster-name">Master Chief</td>
+                        <td>SPARTAN-II</td>
+                        <td>Soldado supersoldado humano. Armadura Mjolnir.</td>
+                        <td style="color:#00ff9d;">Bajo (Aliado)</td>
+                    </tr>
+                    <tr>
+                        <td class="monster-name">Elite</td>
+                        <td>Covenant</td>
+                        <td>Guerrero Sangheili de alta jerarquía. Muy ágil y fuerte.</td>
+                        <td style="color:#ffaa00;">Alto</td>
+                    </tr>
+                    <tr>
+                        <td class="monster-name">Grunt</td>
+                        <td>Covenant</td>
+                        <td>Infantería básica. Cobarde pero peligroso en grupo.</td>
+                        <td style="color:#ffaa00;">Medio</td>
+                    </tr>
+                    <tr>
+                        <td class="monster-name">Jackal</td>
+                        <td>Covenant</td>
+                        <td>Tirador con escudo de energía.</td>
+                        <td style="color:#ffaa00;">Medio</td>
+                    </tr>
+                    <tr>
+                        <td class="monster-name">Hunter (Mgalekgolo)</td>
+                        <td>Covenant</td>
+                        <td>Enemigo pesado. Armadura casi impenetrable.</td>
+                        <td style="color:#ff4444;">Muy Alto</td>
+                    </tr>
+                    <tr>
+                        <td class="monster-name">Flood Infection Form</td>
+                        <td>Flood</td>
+                        <td>Forma parasitaria pequeña. Se adhiere al huésped.</td>
+                        <td style="color:#ff4444;">Alto</td>
+                    </tr>
+                    <tr>
+                        <td class="monster-name">Flood Combat Form</td>
+                        <td>Flood</td>
+                        <td>Huésped infectado. Muy agresivo y rápido.</td>
+                        <td style="color:#ff4444;">Muy Alto</td>
+                    </tr>
+                    <tr>
+                        <td class="monster-name">Flood Carrier Form</td>
+                        <td>Flood</td>
+                        <td>Explota liberando más formas de infección.</td>
+                        <td style="color:#ff4444;">Alto</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Trucos y Secretos -->
+        <div class="section">
+            <h2>▶ TRUCOS, SECRETOS Y ATAJOS - HALO CE</h2>
+            
+            <div class="trick">
+                <strong>Truco Clásico:</strong> Mantén presionado el botón de recargar mientras saltas para hacer "Super Jump" en algunos mapas.
+            </div>
+            <div class="trick">
+                <strong>Skull "Iron":</strong> Actívalo para que no puedas recargar munición. Muy difícil.
+            </div>
+            <div class="trick">
+                <strong>Secretos en The Silent Cartographer:</strong> Hay un camino oculto que te lleva a un Banshee muy temprano.
+            </div>
+            <div class="trick">
+                <strong>Truco de velocidad:</strong> En el nivel "The Pillar of Autumn", puedes salir del mapa por el techo en la primera sala.
+            </div>
+            <div class="trick">
+                <strong>Co-op Skip:</strong> En muchos niveles se pueden saltar secciones enteras con glitches.
             </div>
         </div>
 
-        <!-- Panel Izquierdo -->
-        <div class="panel left-panel">
-            <h1>&gt; UNSC COMMAND</h1>
-            <p>[ERROR] HALO RING DETECTED</p>
-            <p>MASTER CHIEF - SPARTAN-117</p>
-            <p>CORTANA - AI CONSTRUCT</p>
-            <p>PILLAR OF AUTUMN - STATUS: CRITICAL</p>
-            <p>HALO INSTALLATION 04 - ACTIVE</p>
-            <p style="color:#ff4444;">[WARNING] FLOOD CONTAMINATION</p>
+        <!-- Botón para volver o más info -->
+        <div class="terminal-bottom" onclick="alert('Volviendo a terminal principal... (en construcción)')">
+            <h2>◄ REGRESAR A TERMINAL PRINCIPAL ►</h2>
+            <p>Haz clic aquí para volver al menú principal</p>
         </div>
 
-        <!-- Panel Central - Música -->
-        <div class="panel music-panel">
-            <h2>🎵 HALO CE ORIGINAL SOUNDTRACK</h2>
-            <button onclick="toggleMusic()">▶ REPRODUCIR MÚSICA</button>
-            <button onclick="pauseMusic()">⏸ PAUSAR</button>
-            
-            <hr style="border-color:#00ff9d; margin:18px 0;">
-            
-            <h3>🗣 CORTANA VOICE LOGS</h3>
-            <button onclick="playCortana(0)">"Chief... I have a bad feeling about this"</button>
-            <button onclick="playCortana(1)">"This ring... it's a weapon"</button>
-            <button onclick="playCortana(2)">"The Covenant are already here?"</button>
-        </div>
-
-        <!-- Panel Derecho -->
-        <div class="panel right-panel">
-            <h2 style="text-align:center;">THREAT ASSESSMENT</h2>
-            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:10px;">
-                <div style="text-align:center;">
-                    <h3>MASTER CHIEF</h3>
-                    <p style="font-size:15px;">SPARTAN-117</p>
-                </div>
-                <div style="text-align:center;">
-                    <h3>COVENANT</h3>
-                    <p style="font-size:15px;">ELITE • GRUNT</p>
-                </div>
-                <div style="text-align:center;">
-                    <h3>FLOOD</h3>
-                    <p style="font-size:15px;">PARASITE</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Terminal Inferior -->
-        <div class="panel terminal" onclick="openModal()">
-            <h2 style="text-align:center;">► UNSC TERMINAL ACCESS ◄</h2>
-            <p>&gt; BIENVENIDO A INSTALLATION 04</p>
-            <p>&gt; CLIC PARA ACCEDER A ARCHIVOS CLASIFICADOS</p>
-            <p style="color:#ffd700; text-align:center;">(Monstruos • Mapas • Trucos • Historia)</p>
-        </div>
     </div>
-
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <h2 style="text-align:center; padding:20px; background:#001a12;">INTELIGENCIA UNSC - HALO CE</h2>
-            <!-- Aquí pondremos el contenido del modal después -->
-        </div>
-    </div>
-
-    <!-- Audios -->
-    <audio id="halo-music" loop>
-        <source src="halo_ce_theme.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="cortana0"><source src="cortana1.mp3" type="audio/mpeg"></audio>
-    <audio id="cortana1"><source src="cortana2.mp3" type="audio/mpeg"></audio>
-    <audio id="cortana2"><source src="cortana3.mp3" type="audio/mpeg"></audio>
 
     <script>
-        const music = document.getElementById('halo-music');
-
-        function toggleMusic() {
-            if (music.paused) {
-                music.play().catch(() => alert("No se encontró el archivo halo_ce_theme.mp3"));
-            } else {
-                music.pause();
-            }
-        }
-
-        function pauseMusic() {
-            music.pause();
-        }
-
-        function playCortana(n) {
-            const audio = document.getElementById('cortana' + n);
-            if (audio) audio.play();
-        }
-
-        function openModal() {
-            alert("Modal en construcción.\n\nDime qué quieres que ponga dentro (monstruos, mapas, etc.)");
-        }
-
-        // Fondo canvas (mantengo el resize)
+        // Canvas de fondo (puedes pegar aquí el código del anillo que te gustaba)
         const canvas = document.getElementById('bg-canvas');
-        function resizeCanvas() {
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        window.addEventListener('resize', resize);
+        resize();
 
-        // Aquí después pegaremos el código del anillo original cuando me lo des
+        // Aquí después pondremos el dibujo del anillo original
+        // Por ahora queda listo para agregar el fondo animado
     </script>
 </body>
 </html>
