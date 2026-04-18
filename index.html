@@ -2,191 +2,201 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNSC Terminal - Halo Installation 04</title>
+    <title>UNSC INTERFACE - INSTALLATION 04</title>
     <style>
-        /* Importamos una fuente estilo digital */
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-        body {
-            background-color: #01080b;
-            color: #48fbaf;
-            font-family: 'Share Tech Mono', monospace;
+        body, html {
             margin: 0;
-            padding: 20px;
-            /* Efecto de líneas de escaneo de monitor antiguo */
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 4px, 3px 100%;
-            background-attachment: fixed;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            /* AQUÍ SE USA TU FOTO COMO FONDO */
+            background-image: url('protitipo.jpg'); 
+            background-size: cover;
+            background-position: center;
+            font-family: 'Share Tech Mono', monospace;
+            overflow: hidden;
+            color: #48fbaf;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            border: 2px solid #48fbaf;
-            padding: 20px;
-            background: rgba(2, 13, 18, 0.9);
-            box-shadow: 0 0 30px rgba(72, 251, 175, 0.1);
+        /* Capa de escaneo para que parezca un monitor */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 3px, 2px 100%;
+            pointer-events: none;
         }
 
-        /* HEADER - Estilo HUD */
-        header {
+        /* Contenedor Principal Transparente para no tapar el fondo */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 10, 15, 0.4); /* Oscurece un poco para leer mejor */
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .hud-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #48fbaf;
+            border-bottom: 1px solid rgba(72, 251, 175, 0.5);
             padding-bottom: 10px;
-            margin-bottom: 30px;
         }
 
-        .shield-container {
+        .shield-box {
             text-align: right;
         }
 
         .shield-bar {
-            width: 250px;
-            height: 15px;
-            background: rgba(255, 204, 0, 0.2);
+            width: 200px;
+            height: 12px;
             border: 1px solid #ffcc00;
+            background: rgba(255, 204, 0, 0.1);
         }
 
         .shield-fill {
-            width: 85%;
-            height: 100%;
+            width: 90%; height: 100%;
             background: #ffcc00;
-            box-shadow: 0 0 10px #ffcc00;
+            box-shadow: 0 0 15px #ffcc00;
         }
 
-        /* INTRO CORTANA */
-        .cortana-intro {
-            border-left: 4px solid #48fbaf;
-            background: rgba(72, 251, 175, 0.05);
+        /* Estilo de los cuadros de texto (igual a tu foto) */
+        .terminal-window {
+            border: 1px solid rgba(72, 251, 175, 0.6);
+            background: rgba(0, 25, 25, 0.3);
+            backdrop-filter: blur(3px);
             padding: 15px;
-            margin-bottom: 30px;
-            font-style: italic;
+            margin-top: 20px;
+            width: 350px;
+            font-size: 13px;
+            line-height: 1.4;
         }
 
-        .accent { color: #ffcc00; font-weight: bold; }
+        .master-chief-info {
+            position: absolute;
+            bottom: 50px;
+            right: 400px;
+        }
 
-        /* GRID DE INFORMACIÓN */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .enemy-info {
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+            display: flex;
             gap: 20px;
         }
 
-        .card {
-            border: 1px solid rgba(72, 251, 175, 0.4);
-            padding: 15px;
-            background: rgba(0, 30, 30, 0.2);
-        }
-
-        h2 {
-            border-bottom: 1px solid #48fbaf;
-            padding-bottom: 5px;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-        }
-
-        /* TABLAS DE DATOS */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        td { padding: 8px 5px; border-bottom: 1px solid rgba(72, 251, 175, 0.1); }
-        .label { color: #a1ffda; opacity: 0.8; width: 40%; }
-
-        /* IMÁGENES SIMULADAS */
-        .img-box {
-            width: 100%;
-            height: 180px;
-            background: #051a1a;
+        .enemy-card {
             border: 1px solid #48fbaf;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 10px 0;
-            color: rgba(72, 251, 175, 0.3);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 0.7rem;
-            opacity: 0.5;
-            letter-spacing: 5px;
-        }
-
-        /* Audio Player Simple */
-        .audio-sim {
-            background: #0a2020;
+            background: rgba(0, 20, 20, 0.6);
+            width: 150px;
             padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #48fbaf;
-            font-size: 0.9rem;
+            text-align: center;
         }
 
+        .enemy-card img {
+            width: 100%;
+            filter: sepia(1) saturate(5) hue-rotate(90deg); /* Efecto holograma verde */
+        }
+
+        /* Botón de Inicio para el Sonido */
+        #start-btn {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            background: #48fbaf;
+            color: #000;
+            border: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 0 20px #48fbaf;
+        }
+
+        .hidden { display: none; }
+        
+        h2 { margin: 0 0 10px 0; font-size: 16px; border-bottom: 1px solid #48fbaf; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
+<div class="scanlines"></div>
+
+<button id="start-btn" onclick="startSystem()">INICIAR PROTOCOLO DE TERMINAL</button>
+
+<div class="overlay">
+    <div class="hud-header">
         <div>
-            <h1 style="margin: 0; font-size: 1.5rem;">UNSC_TERMINAL_V.04</h1>
-            <span style="font-size: 0.8rem;">SISTEMA OPERATIVO: MJOLNIR V.IV</span>
+            <h1 style="margin:0; font-size: 24px;">UNSC_CORE // HALO_04</h1>
+            <span id="typing-text"></span>
         </div>
-        <div class="shield-container">
-            <div style="font-size: 0.7rem; margin-bottom: 3px;">ENERGÍA DEL ESCUDO</div>
+        <div class="shield-box">
+            <div style="font-size: 10px; color: #ffcc00;">SISTEMA DE ESCUDOS MJOLNIR</div>
             <div class="shield-bar"><div class="shield-fill"></div></div>
         </div>
-    </header>
-
-    <div class="audio-sim">
-        🔊 REPRODUCIENDO: HALO_LOBBY_THEME.MP3 | 03:42
     </div>
 
-    <div class="cortana-intro">
-        <p><span class="accent">[CORTANA]:</span> "Estamos saltando al azar... Espera. Los datos de coordenadas del Capitán Keyes no eran para un salto a ciegas. Estamos en algún lugar... ¿Qué es eso?"</p>
-        <p><span class="accent">[CHIEF]:</span> "¿Es una base enemiga?"</p>
-        <p><span class="accent">[CORTANA]:</span> "No... es un anillo. Es Halo."</p>
+    <div class="terminal-window">
+        <h2 style="color: #ffcc00;">> CORTANA_LOG_2552</h2>
+        <p id="cortana-msg"></p>
     </div>
 
-    <div class="grid">
-        <div class="card">
-            <h2>EXPEDIENTE: SPARTAN-117</h2>
-            <div class="img-box">SCANNING_SUBJECT_117.PNG</div>
-            <table>
-                <tr><td class="label">SUJETO:</td><td>John-117</td></tr>
-                <tr><td class="label">RANGO:</td><td>Master Chief</td></tr>
-                <tr><td class="label">EDAD:</td><td>~41 años (Cronológicos)</td></tr>
-                <tr><td class="label">ESTATURA:</td><td>2.18 m (Con Armadura)</td></tr>
-                <tr><td class="label">PESO:</td><td>451 kg (Con Armadura)</td></tr>
-                <tr><td class="label">ESTADO:</td><td class="accent">EN COMBATE</td></tr>
-            </table>
+    <div class="terminal-window master-chief-info">
+        <h2>MASTER CHIEF - S117</h2>
+        <p>EDAD: 41 (BIOLÓGICA)<br>
+           ESTATURA: 2.18 METROS<br>
+           PESO: 451 KG (FULL GEAR)<br>
+           RANGO: SUB-OFICIAL JEFE MAESTRO</p>
+    </div>
+
+    <div class="enemy-info">
+        <div class="enemy-card">
+            <h2>COVENANT</h2>
+            <div style="font-size: 10px;">AMENAZA: ALTA</div>
+            <p>ELITE / SANGHEILI</p>
         </div>
-
-        <div class="card">
-            <h2>INTELIGENCIA DE AMENAZAS</h2>
-            
-            <h3 style="margin-bottom: 5px;">COVENANT: ELITE</h3>
-            <div class="img-box">SANGHEILI_WARRIOR.DATA</div>
-            <p style="font-size: 0.8rem;">Guerreros tácticos con escudos de energía. Muy peligrosos en distancias cortas.</p>
-
-            <h3 style="margin-bottom: 5px;">COVENANT: GRUNT</h3>
-            <div class="img-box">UNGGOY_LOG.DATA</div>
-            <p style="font-size: 0.8rem;">Carne de cañón. Dependientes de metano. Pánico extremo sin líderes.</p>
-
-            <h3 style="margin-bottom: 5px; color: #ffcc00;">THE FLOOD</h3>
-            <div class="img-box" style="border-color: #ffcc00;">BIOHAZARD_DETECTED.DATA</div>
-            <p style="font-size: 0.8rem;">Parásito infeccioso. Protocolo de contención: Fuego total.</p>
+        <div class="enemy-card">
+            <h2>GRUNT</h2>
+            <div style="font-size: 10px;">AMENAZA: MEDIA</div>
+            <p>UNGGOY / APOYO</p>
         </div>
-    </div>
-
-    <div class="footer">
-        PROPERTY OF UNITED NATIONS SPACE COMMAND - CLASSIFIED
     </div>
 </div>
+
+<div id="youtube-audio" class="hidden"></div>
+
+<script>
+    function startSystem() {
+        // Ocultar botón
+        document.getElementById('start-btn').style.display = 'none';
+
+        // Cargar música de Halo (ID de YouTube del tema original)
+        const audio = new Audio('https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Halo+Theme&filename=mt/MTI1MzM2ODExMjUzNDY2_7lzh_2bR_2f_2bIA.mp3');
+        audio.loop = true;
+        audio.volume = 0.5;
+        audio.play();
+
+        // Efecto de escritura para Cortana
+        let i = 0;
+        let txt = 'Cortana: "Estamos en un anillo... es Halo. Jefe, prepárese para el contacto Covenant."';
+        function typeWriter() {
+            if (i < txt.length) {
+                document.getElementById("cortana-msg").innerHTML += txt.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            }
+        }
+        typeWriter();
+    }
+</script>
 
 </body>
 </html>
