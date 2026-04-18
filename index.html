@@ -2,217 +2,244 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>UNSC MISSION TERMINAL - HALO 04</title>
+    <title>UNSC COMMAND TERMINAL | ALPHA HALO</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --halo-green: #48fbaf;
+            --halo-blue: #00e5ff;
+            --halo-gold: #ffcc00;
+            --glass: rgba(0, 20, 20, 0.7);
+        }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
+            margin: 0; padding: 0; width: 100%; height: 100%;
             background-color: #000;
+            color: var(--halo-green);
             font-family: 'Share Tech Mono', monospace;
             overflow: hidden;
-            color: #48fbaf;
         }
 
-        /* Video de fondo de los anillos de Halo */
+        /* FONDO DE VIDEO */
         #bg-video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            z-index: -2;
-            filter: brightness(0.4) contrast(1.2);
+            position: fixed; top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto; z-index: -100;
+            transform: translateX(-50%) translateY(-50%);
+            filter: brightness(0.3) saturate(1.2);
         }
 
-        /* Capa de efecto digital/monitor */
-        .overlay-fx {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
-                        linear-gradient(90deg, rgba(72, 251, 175, 0.05), rgba(0, 0, 0, 0), rgba(72, 251, 175, 0.05));
-            background-size: 100% 4px, 100% 100%;
-            z-index: -1;
-            pointer-events: none;
+        /* EFECTO DE ESCANEO */
+        .crt-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none; z-index: 10;
         }
 
-        .container {
-            position: relative;
-            z-index: 1;
-            padding: 40px;
+        .main-container {
+            padding: 30px;
             height: 100vh;
-            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            box-sizing: border-box;
+            background: radial-gradient(circle at center, transparent, rgba(0,0,0,0.4));
         }
 
-        /* HUD - Barra de Escudo */
+        /* CABECERA HUD */
         header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
+            border-bottom: 2px solid var(--halo-green);
+            padding-bottom: 10px;
+            animation: slideInDown 0.5s ease-out;
         }
 
-        .shield-ui {
-            text-align: right;
-        }
-
+        .shield-system { text-align: right; }
         .shield-bar {
-            width: 300px;
-            height: 15px;
-            border: 2px solid #ffcc00;
+            width: 350px; height: 18px;
+            border: 2px solid var(--halo-gold);
             background: rgba(255, 204, 0, 0.1);
             position: relative;
         }
-
         .shield-fill {
-            width: 85%;
-            height: 100%;
-            background: #ffcc00;
-            box-shadow: 0 0 15px #ffcc00;
-            animation: flicker 2s infinite;
+            width: 95%; height: 100%;
+            background: var(--halo-gold);
+            box-shadow: 0 0 20px var(--halo-gold);
+            animation: shieldPulse 2s infinite;
         }
 
-        /* Cuadros de Información */
-        .terminal-box {
-            border: 1px solid rgba(72, 251, 175, 0.6);
-            background: rgba(0, 20, 20, 0.6);
-            backdrop-filter: blur(5px);
+        /* VENTANAS DE DATOS */
+        .grid-ui {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .data-card {
+            background: var(--glass);
+            border: 1px solid var(--halo-green);
+            backdrop-filter: blur(10px);
             padding: 20px;
-            width: 380px;
-            box-shadow: 0 0 20px rgba(0, 255, 150, 0.1);
+            position: relative;
+            box-shadow: inset 0 0 15px rgba(72, 251, 175, 0.2);
+            animation: fadeIn 1s ease-out;
         }
 
-        .stats-grid {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
+        .data-card::before {
+            content: ""; position: absolute; top: -5px; left: -5px;
+            width: 20px; height: 20px; border-top: 2px solid var(--halo-green); border-left: 2px solid var(--halo-green);
         }
 
-        h2 { border-bottom: 1px solid #48fbaf; margin: 0 0 10px 0; font-size: 18px; color: #a1ffda; }
-
-        /* Botón de Inicio */
-        #start-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-        }
-
-        #start-btn {
-            padding: 20px 50px;
-            font-family: 'Share Tech Mono', monospace;
-            background: transparent;
-            color: #48fbaf;
-            border: 2px solid #48fbaf;
-            font-size: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        #start-btn:hover {
-            background: #48fbaf;
-            color: #000;
-            box-shadow: 0 0 30px #48fbaf;
-        }
-
-        @keyframes flicker {
-            0% { opacity: 1; }
-            50% { opacity: 0.8; }
-            100% { opacity: 1; }
-        }
-
-        .enemy-tag {
-            display: inline-block;
-            margin-right: 10px;
-            border: 1px solid #48fbaf;
+        h2 { 
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 14px; margin: 0 0 15px 0; 
+            background: rgba(72, 251, 175, 0.2); 
             padding: 5px;
-            text-align: center;
-            width: 100px;
         }
+
+        /* INFO ESPECÍFICA */
+        .chief-photo {
+            width: 100%; height: 200px;
+            background: url('https://i.imgur.com/your-image-link-here.jpg') center/cover; /* Puedes poner tu foto aquí */
+            border: 1px solid var(--halo-green);
+            margin-bottom: 15px;
+            filter: grayscale(1) brightness(1.2) sepia(1) hue-rotate(90deg);
+        }
+
+        .enemy-box {
+            display: flex; gap: 10px; margin-top: 10px;
+        }
+        .enemy-item {
+            flex: 1; border: 1px solid var(--halo-blue);
+            text-align: center; padding: 5px; font-size: 10px;
+        }
+
+        /* PANTALLA DE INICIO */
+        #boot-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 1000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .btn-boot {
+            background: transparent; color: var(--halo-green);
+            border: 2px solid var(--halo-green);
+            padding: 15px 40px; font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem; cursor: pointer; transition: 0.3s;
+        }
+        .btn-boot:hover { background: var(--halo-green); color: #000; box-shadow: 0 0 40px var(--halo-green); }
+
+        /* ANIMACIONES */
+        @keyframes shieldPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+
     </style>
 </head>
 <body>
 
-<div id="start-screen">
-    <button id="start-btn" onclick="initSystem()">[ INICIAR PROTOCOLO COLE ]</button>
+<div id="boot-screen">
+    <h1 style="margin-bottom: 30px; letter-spacing: 10px;">SISTEMA MJOLNIR V.4</h1>
+    <button class="btn-boot" onclick="bootSystem()">ACCEDER A TERMINAL</button>
 </div>
 
 <video autoplay muted loop id="bg-video">
-    <source src="https://assets.mixkit.co/videos/preview/mixkit-stars-in-the-deep-blue-sky-31842-large.mp4" type="video/mp4">
+    <source src="https://assets.mixkit.co/videos/preview/mixkit-nebula-in-deep-space-31843-large.mp4" type="video/mp4">
 </video>
 
-<div class="overlay-fx"></div>
+<div class="crt-overlay"></div>
 
-<div class="container">
+<div class="main-container">
     <header>
         <div>
-            <h1 style="margin:0; letter-spacing: 5px;">UNSC // INSTALLATION_04</h1>
-            <p id="cortana-text" style="color: #ffcc00; margin: 5px 0;"></p>
+            <h1 style="margin:0; font-family: 'Orbitron'; font-size: 28px;">UNSC // ALPHA HALO</h1>
+            <div id="cortana-msg" style="color: var(--halo-gold); font-size: 14px; margin-top: 5px;"></div>
         </div>
-        <div class="shield-ui">
-            <div style="font-size: 12px; margin-bottom: 5px;">SISTEMA DE ESCUDOS MJOLNIR</div>
+        <div class="shield-system">
+            <div style="font-size: 10px; margin-bottom: 4px;">RECARGA DE ESCUDOS</div>
             <div class="shield-bar"><div class="shield-fill"></div></div>
         </div>
     </header>
 
-    <div class="stats-grid">
-        <div class="terminal-box">
-            <h2>PERFIL: MASTER CHIEF S-117</h2>
-            <p>ESTATURA: 218 CM<br>
+    <div class="grid-ui">
+        <div class="data-card">
+            <h2>SPARTAN-117 DATABASE</h2>
+            <div class="chief-photo"></div>
+            <p>NOMBRE: JOHN-117<br>
+               RANGO: MASTER CHIEF<br>
+               ALTURA: 218 CM<br>
                PESO: 451 KG<br>
-               ESTADO: ACTIVO EN EL ANILLO<br>
-               IA ASIGNADA: CORTANA [CTN 0452-9]</p>
+               ARMADURA: MJOLNIR MK V</p>
         </div>
 
-        <div class="terminal-box" style="width: 500px;">
-            <h2>INTELIGENCIA DE AMENAZAS</h2>
-            <div style="display: flex;">
-                <div class="enemy-tag">
-                    <div style="font-size: 10px;">COVENANT</div>
-                    <small>ELITE</small>
-                </div>
-                <div class="enemy-tag">
-                    <div style="font-size: 10px;">COVENANT</div>
-                    <small>GRUNT</small>
-                </div>
-                <div class="enemy-tag" style="border-color: red; color: red;">
-                    <div style="font-size: 10px;">PARÁSITO</div>
-                    <small>FLOOD</small>
-                </div>
+        <div class="data-card">
+            <h2>ESTADO DE LA INSTALACIÓN</h2>
+            <p style="font-size: 12px; color: var(--halo-blue);">
+                > ESCANEANDO ANILLO... 100%<br>
+                > AMENAZA COVENANT DETECTADA EN SECTOR 4<br>
+                > PROTOCOLO DE AUTODESTRUCCIÓN: DESACTIVADO<br>
+                > UBICACIÓN: EL CARTÓGRAFO SILENCIOSO
+            </p>
+            <div style="border: 1px dashed var(--halo-green); height: 150px; margin-top: 20px; display: flex; align-items: center; justify-content: center;">
+                [ MAPA HOLOGRÁFICO EN LÍNEA ]
             </div>
         </div>
+
+        <div class="data-card">
+            <h2>ANÁLISIS DE AMENAZAS</h2>
+            <div class="enemy-box">
+                <div class="enemy-item">COVENANT<br><b>ELITE</b></div>
+                <div class="enemy-item">COVENANT<br><b>GRUNT</b></div>
+            </div>
+            <div class="enemy-box" style="margin-top: 20px;">
+                <div class="enemy-item" style="border-color: red; color: red;">PARÁSITO<br><b>THE FLOOD</b></div>
+            </div>
+            <p style="font-size: 11px; margin-top: 20px;">
+                ADVERTENCIA: El parásito Flood ha roto la contención. El monitor 343 Guilty Spark solicita asistencia.
+            </p>
+        </div>
     </div>
+
+    <footer style="text-align: center; font-size: 10px; opacity: 0.5; letter-spacing: 8px;">
+        UNSC COMMAND - CLASSIFIED - 2552
+    </footer>
 </div>
 
+<audio id="sfx-shield">
+    <source src="https://www.soundjay.com/buttons/sounds/button-20.mp3" type="audio/mpeg">
+</audio>
 <audio id="halo-theme" loop>
     <source src="https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Halo+Theme&filename=mt/MTI1MzM2ODExMjUzNDY2_7lzh_2bR_2f_2bIA.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-    function initSystem() {
-        document.getElementById('start-screen').style.display = 'none';
-        
-        // Iniciar Música
+    function bootSystem() {
+        // Sonido de inicio y música
+        document.getElementById('sfx-shield').play();
         const music = document.getElementById('halo-theme');
-        music.volume = 0.4;
+        music.volume = 0.3;
         music.play();
 
-        // Voz de Cortana (Efecto de escritura)
+        // Ocultar pantalla de carga
+        document.getElementById('boot-screen').style.display = 'none';
+
+        // Mensaje de Cortana
         let i = 0;
-        let txt = 'CORTANA: "Estamos en un anillo... es Halo. Prepárate, Jefe. El Covenant ya está aquí."';
+        let txt = 'CORTANA: "Jefe, estamos saltando al azar... no, espera. Es Halo. Prepárate para el despliegue."';
         function typeWriter() {
             if (i < txt.length) {
-                document.getElementById("cortana-text").innerHTML += txt.charAt(i);
+                document.getElementById("cortana-msg").innerHTML += txt.charAt(i);
                 i++;
-                setTimeout(typeWriter, 50);
+                setTimeout(typeWriter, 40);
             }
         }
         typeWriter();
